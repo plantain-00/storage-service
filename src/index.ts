@@ -21,11 +21,12 @@ try {
 
 app.use(bodyParser.json())
 
-function setCors(res: express.Response) {
+app.use((_, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-}
+  next()
+})
 
 app.get('/:key', (req, res) => {
   const filePath = path.resolve(filesPath, req.params.key)
@@ -35,7 +36,6 @@ app.get('/:key', (req, res) => {
       res.end(error.message)
     } else {
       res.setHeader('Content-Type', 'application/json')
-      setCors(res)
       res.send(fs.readFileSync(filePath))
     }
   })
@@ -49,7 +49,6 @@ app.post('/:key', (req, res) => {
       res.end(error.message)
     } else {
       res.setHeader('Content-Type', 'application/json')
-      setCors(res)
       res.send(fs.readFileSync(filePath))
     }
   })
