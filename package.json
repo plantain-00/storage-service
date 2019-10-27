@@ -50,7 +50,8 @@
     "fast-json-patch": "^3.0.0-1",
     "minimist": "^1.2.0",
     "tslib": "1.10.0",
-    "ws": "^7.2.0"
+    "ws": "^7.2.0",
+    "ws-heartbeat": "^1.1.0"
   },
   "typeCoverage": {
     "atLeast": 100

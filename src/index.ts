@@ -9,6 +9,7 @@ import * as http from 'http'
 import * as WebSocket from 'ws'
 import * as qs from 'querystring'
 import * as url from 'url'
+import { setWsHeartbeat } from 'ws-heartbeat/server'
 
 const server = http.createServer()
 const wss = new WebSocket.Server({ server })
@@ -92,6 +93,12 @@ app.patch('/:key', async (req, res) => {
   }
 })
 
+setWsHeartbeat(wss, (ws, data: unknown) => {
+  if (data === '{"method":"ping"}') {
+    ws.send('{"method":"pong"}')
+  }
+})
+
 wss.on('connection', (ws, req) => {
   if (req.url) {
     const query = url.parse(req.url).query
@@ -110,8 +117,13 @@ wss.on('connection', (ws, req) => {
         ws.on('message', async (data) => {
           if (typeof data === 'string') {
             const json = JSON.parse(data) as {
-              method: 'patch',
+              method: 'patch'
               operations: jsonpatch.Operation[]
+            } | {
+              method: 'ping'
+            }
+            if (json.method === 'ping') {
+              return
             }
             if (json.method === 'patch') {
               await patch(key, json.operations)
