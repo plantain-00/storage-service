@@ -29,6 +29,7 @@
     "@types/jasmine": "3.4.4",
     "@types/minimist": "^1.2.0",
     "@types/node": "12.11.7",
+    "@types/ws": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "2.5.0",
     "@typescript-eslint/parser": "2.5.0",
     "clean-release": "2.7.0",
@@ -46,8 +47,10 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "fast-json-patch": "^3.0.0-1",
     "minimist": "^1.2.0",
-    "tslib": "1.10.0"
+    "tslib": "1.10.0",
+    "ws": "^7.2.0"
   },
   "typeCoverage": {
     "atLeast": 100
