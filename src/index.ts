@@ -47,9 +47,9 @@ app.get('/:key', async (req, res) => {
     await statAsync(filePath)
     res.setHeader('Content-Type', 'application/json')
     res.send(await readFileAsync(filePath))
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(404)
-    res.end(error.message)
+    res.end(error instanceof Error ? error.message : String(error))
   }
 })
 
@@ -59,9 +59,9 @@ app.post('/:key', async (req, res) => {
     await writeFileAsync(filePath, JSON.stringify((req as { body: unknown }).body))
     res.setHeader('Content-Type', 'application/json')
     res.send(await readFileAsync(filePath))
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(400)
-    res.end(error.message)
+    res.end(error instanceof Error ? error.message : String(error))
   }
 })
 
@@ -87,9 +87,9 @@ app.patch('/:key', async (req, res) => {
       }
     }
     res.json(newJson).end()
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(400)
-    res.end(error.message)
+    res.end(error instanceof Error ? error.message : String(error))
   }
 })
 
